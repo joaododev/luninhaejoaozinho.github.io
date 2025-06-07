@@ -1,1681 +1,201 @@
-<style>
-    .text-drh {
-        margin-left: 70px;
-        position: relative;
-        display: grid;
-        color: #464444;
-        text-transform: capitalize;
-        font-family: 'Poppins';
-    }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Tempo</title>
+    <script>
+        function iniciarContador() {
+            document.getElementById("telaInicial").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("telaInicial").style.display = "none";
+                document.getElementById("contadorPagina").style.display = "block";
+                document.getElementById("contadorPagina").style.opacity = "1";
+                atualizarContador();
+                setInterval(atualizarContador, 1000);
+            }, 300);
+        }
+        
+        function atualizarContador() {
+            const dataInicio = new Date("2024-12-07T00:00:00");
+            const agora = new Date();
+            let diferenca = Math.floor((agora - dataInicio) / 1000);
+            
+            const anos = Math.floor(diferenca / (365 * 24 * 60 * 60));
+            diferenca %= 365 * 24 * 60 * 60;
+            const meses = Math.floor(diferenca / (30 * 24 * 60 * 60));
+            diferenca %= 30 * 24 * 60 * 60;
+            const semanas = Math.floor(diferenca / (7 * 24 * 60 * 60));
+            diferenca %= 7 * 24 * 60 * 60;
+            const dias = Math.floor(diferenca / (24 * 60 * 60));
+            diferenca %= 24 * 60 * 60;
+            const horas = Math.floor(diferenca / (60 * 60));
+            diferenca %= 60 * 60;
+            const minutos = Math.floor(diferenca / 60);
+            const segundos = diferenca % 60;
+            
+            document.getElementById("contador").innerText = 
+                `${anos} anos, ${meses} meses, ${semanas} semanas, ${dias} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
+        }
 
-    .check-drh {
-        color: white;
-        border-radius: 5px;
-        text-align: center;
-        line-height: 14px;
-        text-shadow: 0 1px 1px rgba(0,0,0,.4);
-        padding: 14px;
-        display: inline-table;
-        border: 1px solid rgba(0,0,0,.6)!important;
-    }
-
-    .check-drh:before {
-        content: '\f560';
-        font-family: 'Font Awesome 5 Pro';
-        float: left;
-        padding: 40px 26px;
-        font-size: 24px;
-        position: absolute;
-        left: 18px;
-        background: #669900;
-    }
-
-    .check-text-drh {
-        width: 20%;
-        position: relative;
-        margin-left: 26px;
-    }
-
-    .cancel-drh {
-        color: white;
-        border-radius: 6px;
-        text-align: center;
-        line-height: 14px;
-        text-shadow: 0 1px 1px rgba(0,0,0,.4);
-        padding: 14px;
-        display: inline-table;
-    }
-
-    .cancel-drh:before {
-        content: '\f057';
-        font-family: 'Font Awesome 5 Pro';
-        float: left;
-        padding: 30px 25px;
-        font-size: 24px;
-        position: absolute;
-        left: 18px;
-        background: #ff0000;
-    }
-
-    .cancel-text-drh {
-        width: 20%;
-        position: relative;
-        margin-left: 26px;
-    }
-
-    .alert-drh {
-        color: white;
-        border-radius: 6px;
-        text-align: center;
-        line-height: 14px;
-        text-shadow: 0 1px 1px rgba(0,0,0,.4);
-        padding: 14px;
-        display: inline-table;
-    }
-
-    .alert-drh:before {
-        content: '\f071';
-        font-family: 'Font Awesome 5 Pro';
-        float: left;
-        padding: 31px 24px;
-        font-size: 24px;
-        position: absolute;
-        left: 18px;
-        background: #daa520;
-    }
-
-    .alert-text-drh {
-        width: 20%;
-        position: relative;
-        margin-left: 26px;
-    }
-
-    /* TOOLTIP PARA DESTAQUES */
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
-
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background: #24282b url;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 4px;
-        top: 33px;
-        position: absolute;
-        z-index: 1;
-        margin-left: 20px;
-    }
-
-    .tooltip .tooltiptext::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #24282b transparent transparent transparent;
-    }
-
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-    }
-
-    .tooltip2 {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
-
-    .tooltip2 .tooltiptext2 {
-        visibility: hidden;
-        width: 120px;
-        background: #24282b url;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 4px;
-        position: absolute;
-        z-index: 1;
-        margin-left: 55px;
-    }
-
-    .tooltip2 .tooltiptext2::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #24282b transparent transparent transparent;
-    }
-
-    .tooltip2:hover .tooltiptext2 {
-        visibility: visible;
-    }
-
-    .tooltip3 {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
-
-    .tooltip3 .tooltiptext3 {
-        visibility: hidden;
-        width: 120px;
-        background: #24282b url;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 4px;
-        position: absolute;
-        z-index: 1;
-        margin-left: 85px;
-        top: 100px;
-    }
-
-    .tooltip3 .tooltiptext4 {
-        visibility: hidden;
-        width: 120px;
-        background: #24282b url;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 4px;
-        position: absolute;
-        z-index: 1;
-        margin-left: 85px;
-        top: 80px;
-    }
-
-    .tooltip3 .tooltiptext3::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #947333 transparent transparent transparent;
-    }
-
-    .tooltip3 .tooltiptext4::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #947333 transparent transparent transparent;
-    }
-
-    .tooltip3:hover .tooltiptext3 {
-        visibility: visible;
-    }
-
-    .tooltip3:hover .tooltiptext4 {
-        visibility: visible;
-    }
-</style>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" id="min-width" lang="pt" xml:lang="pt" xmlns:og="http://opengraphprotocol.org/schema/">
-    <head>
-        <title>[CDO] Avaliação de Oficiais [BETA]</title>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-        <meta http-equiv="content-script-type" content="text/javascript"/>
-        <meta http-equiv="content-style-type" content="text/css"/>
-        <link rel="shortcut icon" type="image/x-icon" href="https://2img.net/i.imgur.com/AMpcXII.png"/>
-        <meta name="description" content="DEPARTAMENTO DE INTELIGÊNCIA MILITAR Conselho de Liderança Militar A Presidência do Conselho de Liderança Militar decidiu que acontecerá uma reunião a cada qui"/>
-        <link rel="canonical" href="https://pdim.forumeiros.com/t155-cdo-avaliacao-de-oficiais-beta"/>
-        <link rel="apple-touch-icon" sizes="57x57" href="/images/icons-57.png">
-        <link rel="apple-touch-icon" href="/images/icons-180.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="/images/icons-60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="/images/icons-72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="/images/icons-76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="/images/icons-114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="/images/icons-120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="/images/icons-144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="/images/icons-152.png">
-        <link rel="apple-touch-icon" sizes="167x167" href="/images/icons-167.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/icons-180.png">
-        <meta name="apple-mobile-web-app-title" content="">
-        <link rel="manifest" href="/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="/images/icons-144.png">
-        <meta property="og:title" content="[CDO] Avaliação de Oficiais [BETA]"/>
-        <meta property="og:site_name" content="pdim.forumeiros.com"/>
-        <meta property="og:url" content="https://pdim.forumeiros.com/t155-cdo-avaliacao-de-oficiais-beta"/>
-        <meta property="og:type" content="article"/>
-        <meta property="og:image" content="https://2img.net/i/fa/modernbb/logo-simple.png"/>
-        <meta name="twitter:card" content="summary"/>
-        <meta name="twitter:site" content="@Forumeiros_PT"/>
-        <meta name="twitter:title" content="[CDO] Avaliação de Oficiais [BETA]"/>
-        <meta property="og:description" content="DEPARTAMENTO DE INTELIGÊNCIA MILITAR Conselho de Liderança Militar A Presidência do Conselho de Liderança Militar decidiu que acontecerá uma reunião a cada qui"/>
-        <meta name="title" content="[CDO] Avaliação de Oficiais [BETA]"/>
-        <link rel="preconnect" href="https://map.sddan.com">
-        <link rel="preconnect" href="https://js.sddan.com">
-        <link rel="stylesheet" href="/58-ltr.css" type="text/css"/>
-        <link rel="search" type="application/opensearchdescription+xml" href="/improvedsearch.xml" title="POLÍCIA DIM"/>
-        <link rel="search" type="application/opensearchdescription+xml" href="https://www.directorioforuns.com/search/improvedsearch.xml" title="Pesquisar fóruns"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        <script src="https://illiweb.com/rs3/87/frm/lang/pt.js" type="text/javascript"></script>
-        <script type="application/ld+json">
-            {
-                "@context": "https:\/\/schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "item": {
-                            "@id": "https:\/\/pdim.forumeiros.com\/",
-                            "name": "POL\u00cdCIA DIM"
-                        }
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 2,
-                        "item": {
-                            "@id": "https:\/\/pdim.forumeiros.com\/c6-setor-dos-orgaos-administrativos",
-                            "name": "Setor dos \u00d3rg\u00e3os Administrativos"
-                        }
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 3,
-                        "item": {
-                            "@id": "https:\/\/pdim.forumeiros.com\/f14-conselho-de-lideranca-militar",
-                            "name": "Conselho de Lideran\u00e7a Militar"
-                        }
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 4,
-                        "item": {
-                            "@id": "https:\/\/pdim.forumeiros.com\/t155-cdo-avaliacao-de-oficiais-beta",
-                            "name": "[CDO] Avalia\u00e7\u00e3o de Oficiais [BETA]"
-                        }
-                    }
-                ]
-            }</script>
-        <script type="application/ld+json">
-            {
-                "@context": "https:\/\/schema.org",
-                "@type": "DiscussionForumPosting",
-                "headline": "[CDO] Avalia\u00e7\u00e3o de Oficiais [BETA]",
-                "name": "[CDO] Avalia\u00e7\u00e3o de Oficiais [BETA]",
-                "url": "https:\/\/pdim.forumeiros.com\/t155-cdo-avaliacao-de-oficiais-beta",
-                "datePublished": "2024-10-02T14:35:23-03:00",
-                "pageStart": "1",
-                "pageEnd": "1",
-                "image": "https:\/\/illiweb.com\/fa\/modernbb\/logo-simple.png",
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "POL\u00cdCIA DIM",
-                    "logo": {
-                        "@type": "ImageObject",
-                        "url": "https:\/\/pdim.forumeiros.com\/images\/icons-150.png"
-                    }
-                },
-                "author": {
-                    "@type": "Person",
-                    "name": "Cons. Lideran\u00e7a Militar",
-                    "url": "https:\/\/pdim.forumeiros.com\/u3"
-                },
-                "interactionStatistic": {
-                    "@type": "InteractionCounter",
-                    "interactionType": "https:\/\/schema.org\/CommentAction",
-                    "userInteractionCount": "0"
-                }
-            }</script>
-        <script type="text/javascript">
-            //<![CDATA[
-            $(document).ready(function() {});
-            //]]>
-        </script>
-        <style type="text/css">
-            #page-footer, div.navbar, div.navbar ul.linklist {
-                display: block !important;
-            }
-
-            ul.linklist li.rightside, ul.linklist li.rightside a.copyright {
-                display: inline !important;
-            }
-        </style>
-        <script src="/99296.js" type="text/javascript"></script>
-        <script type="text/javascript" src="https://cache.consentframework.com/js/pa/24697/c/IxWav/stub"></script>
-        <script type="text/javascript" src="https://choices.consentframework.com/js/pa/24697/c/IxWav/cmp?lang=pt" async></script>
-        <script type="text/javascript" src="https://static.criteo.net/js/ld/publishertag.js" async></script>
-        <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-144347007-1"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/jquery/cookie/jquery.cookie.js"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/mentions/tooltipster.js"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/mentions/init.js"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/jquery/likes/FA_Likes.js"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/jquery/FA_Profiles.js"></script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/embed/FA_Embed.js"></script>
-        <script type="text/javascript">
-            //<![CDATA[
-            window.Sddan = {
-                "info": {
-                    "hd_m": "b4cf4b5865a3922c66a63096edeedc0c",
-                    "hd_s256": "520354f7965d0c569fed3166158d8db15fde91b695695911e2bee0ce350cef27"
-                }
-            }
-
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-
-            gtag('config', 'UA-144347007-1');
-
-            var setScreen = function() {
-                if (typeof document.documentElement !== "undefined") {
-                    var w = document.documentElement.clientWidth;
-                    var h = document.documentElement.clientHeight;
-                    $.cookie("_fa-screen", '{"w":' + w + ',"h":' + h + '}', {
-                        expires: 15,
-                        domain: 'pdim.forumeiros.com'
-                    });
-                }
-            };
-            setScreen();
-            window.Criteo = window.Criteo || {};
-            window.Criteo.events = window.Criteo.events || [];
-
-            // Declare this above the adunits
-            var width = window.screen.width || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || width <= 768);
-            var CriteoAdUnits = ""
-
-            Criteo.events.push(function() {
-                Criteo.SetIdentities([{
-                    "uids": [{
-                        id: "b4cf4b5865a3922c66a63096edeedc0c",
-                        atype: 3,
-                        ext: {
-                            stype: "hemmd5"
-                        }
-                    }, {
-                        id: "520354f7965d0c569fed3166158d8db15fde91b695695911e2bee0ce350cef27",
-                        atype: 3,
-                        ext: {
-                            stype: "hemsha256"
-                        }
-                    }]
-                }]);
-                Criteo.Passback.RequestBids(CriteoAdUnits, 2000);
-            });
-            function CriteoAdblock(containerid, zoneid, pbcontainerid) {
-                Criteo.events.push(function() {
-                    Criteo.DisplayAcceptableAdIfAdblocked({
-                        "zoneid": zoneid,
-                        "containerid": containerid,
-                        "overrideZoneFloor": false,
-                        "callbacksuccess": function() {
-                            document.getElementById(pbcontainerid).style.display = "none";
-                            //if adblock, collapse passback container id
-                        }
-                    });
-                    window.addEventListener("message", function(e) {
-                        if (e.data && e.data == 'criteo-adblock-passback-' + zoneid)
-                            document.getElementById(containerid).style.display = "none";
-                        else
-                            return;
-                    }, false);
-                });
-            }
-
-            function togglePassword(input, icon) {
-                if (input.type === "password") {
-                    input.type = "text";
-                    icon.classList.add("on");
+        function escreverTextoComEfeito(elementId, texto, velocidade) {
+            let i = 0;
+            const elemento = document.getElementById(elementId);
+            elemento.innerHTML = "";
+            function escrever() {
+                if (i < texto.length) {
+                    elemento.innerHTML += texto.charAt(i);
+                    i++;
+                    setTimeout(escrever, velocidade);
                 } else {
-                    input.type = "password";
-                    icon.classList.remove("on");
+                    // Após a digitação do texto, mostramos a imagem com fade-in
+                    mostrarImagemComFadeIn();
                 }
             }
+            escrever();
+        }
 
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll("input[type=\"password\"]").forEach(function(passwordField) {
-                    const container = document.createElement("div");
-                    container.classList.add("password-container");
-
-                    passwordField.parentNode.insertBefore(container, passwordField);
-                    container.appendChild(passwordField);
-
-                    const eyeIcon = document.createElement("img");
-                    eyeIcon.classList.add("show_hide_pwd");
-                    eyeIcon.src = "https://illiweb.com/fa//icon-eye.svg";
-
-                    eyeIcon.addEventListener("click", function() {
-                        togglePassword(passwordField, eyeIcon);
-                    });
-
-                    container.appendChild(eyeIcon);
-                });
-            });
-
-            if (typeof (_userdata) == "undefined")
-                var _userdata = new Object();
-            _userdata["session_logged_in"] = 1;
-            _userdata["username"] = "Cons. Liderança Militar";
-            _userdata["user_id"] = 3;
-            _userdata["tpl_used"] = "modernbb";
-            _userdata["user_level"] = 2;
-            _userdata["user_lang"] = "pt";
-            _userdata["activate_toolbar"] = 0;
-            _userdata["fix_toolbar"] = 0;
-            _userdata["notifications"] = 1;
-            _userdata["avatar"] = "<img loading=\"lazy\" src=\"https://2img.net/u/4411/50/71/50/avatars/3-45.png\"  alt=\"Cons. Liderança Militar\" style=\"max-width: 200px; max-height: 600px\"  />";
-            _userdata["avatar_link"] = "https://2img.net/u/4411/50/71/50/avatars/3-45.png";
-            _userdata["user_posts"] = 8;
-            _userdata["user_nb_privmsg"] = 0;
-            _userdata["groupcolor"] = "346B00";
-
-            if (typeof (_lang) == "undefined")
-                var _lang = new Object();
-            _lang["Share"] = "Compartilhe";
-            _lang["Login"] = "Entrar";
-            _lang["Register"] = "Registrar";
-            _lang["Welcome"] = "Olá";
-            _lang["Notifications"] = "Notificações";
-            _lang["See_my_profile"] = "Ver perfil";
-            _lang["Edit_profile"] = "Editar perfil";
-            _lang["All_Topics"] = "Todos os tópicos";
-            _lang["All_Messages"] = "Todas as mensagens";
-            _lang["js_topics_followed"] = "Tópicos seguidos";
-            _lang["Admin_panel"] = "Painel administrativo";
-            _lang["Logout"] = "Sair";
-            _lang["Follow"] = "Seguir";
-            _lang["Unfollow"] = "Não seguir";
-
-            _lang["Notif_see_all"] = "Ver todas as notificações";
-            _lang["Notif_priv_msg"] = "Recebeste uma <a href=\"/privmsg?folder=inbox&amp;nid=%(nid)s\">mensagem privada</a> de <a href=\"/u%(id)d\">%(name)s</a>";
-            _lang["Notif_report"] = "<a href=\"/u%(id)d\">%(name)s</a> criou uma <a href=\"/report?nid=%(nid)s\">denúncia</a>";
-            _lang["Notif_friend_req"] = "Recebeste uma <a href=\"/profile?mode=editprofile&amp;nid=%(nid)s&amp;page_profil=friendsfoes\">solicitação de amizade</a> de <a href=\"/u%(id)d\">%(name)s</a>";
-            _lang["Notif_group_req"] = "<a href=\"/u%(id)d\">%(name)s</a> quer participar no grupo <a href=\"/g%(group_id)d-%(group_url_name)s?nid=%(nid)s\">%(group_name)s</a>";
-            _lang["Notif_friend_con"] = "<a href=\"/u%(id)d\">%(name)s</a> acaba de conectar-se ao fórum";
-            _lang["Notif_wall_msg"] = "<a href=\"/u%(id)d\">%(name)s</a> publicou uma mensagem no <a href=\"/u%(self)dwall?nid=%(nid)s\">teu perfil</a>";
-            _lang["Notif_abuse"] = "<a href=\"/admin/?mode=active&amp;nid=%(nid)s&amp;part=misc&amp;sub=support&amp;tid=f3e3daa6cb1675dec8b28c846f267cf7&amp;_tc=1728714000\">Um abuso</a> foi denunciado";
-            _lang["Notif_topic_watch2"] = "<a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_topic_watch_p2"] = "<a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_topic_watch_guest2"] = "Um visitante escreveu uma mensagem em <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_topic_watch_p_guest2"] = "Um visitante escreveu uma mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_topic_watch"] = "<a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico</a>";
-            _lang["Notif_topic_watch_p"] = "<a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico</a>";
-            _lang["Notif_topic_watch_guest"] = "Um visitante escreveu uma mensagem em <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico que segues</a>";
-            _lang["Notif_topic_watch_p_guest"] = "Um visitante escreveu uma mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico que segues</a>";
-            _lang["Notif_mention"] = "<a href=\"/u%(id)d\">%(name)s</a> mencionou-te em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_like"] = "<a href=\"/u%(id)d\">%(name)s</a> gostou da tua mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_display_name)s</a>";
-            _lang["Notif_dislike"] = "<a href=\"/u%(id)d\">%(name)s</a> não gostou da tua mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_display_name)s</a>";
-            _lang["Notif_hashtag"] = "A palavra-chave <a href=\"/tags/%(tag)s\">#%(tag)s</a> foi marcada em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico</a>";
-            _lang["Notif_forum_watch"] = "<a href=\"/u%(id)d\">%(name)s</a> publicou <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s\">%(topic_title)s</a> no fórum <a href=\"/f%(forum_id)d-%(forum_name)s?nid=%(nid)s\">%(forum_title)s</a>";
-            _lang["Notif_advert_validate"] = "Seu anúncio \"%(ad_title)s\" foi validado. <a href=\"/d%(ad_id)d-%(ad_url)s?nid=%(nid)s\">Ver anúncio</a>";
-            _lang["Notif_advert_delete"] = "O teu anúncio \"%(ad_title)s\" foi apagado!";
-            _lang["Notif_advert_refuse"] = "O teu anúncio \"%(ad_title)s\" foi recusado. <a href=\"/post?d=%(ad_id)d&amp;f=%(forum_id)d&amp;nid=%(nid)s\">Ver anúncio</a>";
-            _lang["Notif_advert_expired"] = "O teu anúncio \"\" atingiu o tempo limite. Podes publicá-lo novamente <a title='Publicar novamente a publicação' href=\"/post?d=%(ad_id)d&amp;f=%(forum_id)d&amp;nid=%(nid)s\">clicando aqui</a>";
-            _lang["Notif_award"] = "<div class=\"notif_award\" style=\"--award-image:url('%(award_image)s')\"></div><div class=\"notif_award_text\">%(award_notif)s</div>";
-            _lang["Notif_followers_new_topic"] = "O seguidor <a href=\"/u%(id)d\">%(name)s</a> publicou <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s\">%(topic_title)s</a>";
-            _lang["Notif_followers_new_post2"] = "O seguidor <a href=\"/u%(id)d\">%(name)s</a> respondeu ao tópico <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_followers_new_post_p2"] = "O seguidor <a href=\"/u%(id)d\">%(name)s</a> respondeu ao tópico <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">%(topic_title)s</a>";
-            _lang["Notif_followers_new_post"] = "O seguidor <a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico</a>";
-            _lang["Notif_followers_new_post_p"] = "O seguidor <a href=\"/u%(id)d\">%(name)s</a> escreveu uma mensagem em <a href=\"/t%(topic_id)dp%(start)d-%(topic_name)s?nid=%(nid)s#%(post_id)d\">um tópico</a>";
-            _lang["Notif_no_notifications"] = "Sem notificações";
-            _lang["All_PMs"] = "Minhas MPs";
-            _lang["rank_title"] = "<div class=\"cdg rank\">Conta Oficial</div>";
-            _lang["No_assigned_rank"] = "Nenhum rank especial atribuído";
-            _lang["Posts"] = "Mensagens";
-            _lang["PMs"] = "MPs";
-            _lang["Reputation"] = "Reputação";
-            _lang["Twitter"] = "Forumeiros_PT";
-            _lang["copied_id"] = "Copiado";
-
-            if (typeof (_board) == "undefined")
-                var _board = new Object();
-            _board["reputation_active"] = 0;
-            _board["Forumotion"] = "Forumeiros";
-            _board["toolbar_title_url"] = "https://www.forumeiros.com";
-            _board["toolbar_logo"] = "https://2img.net/i/fa/i/toolbar/pa0.png";
-
-            if (typeof (_lang) == "undefined") {
-                var _lang = new Object();
-            }
-
-            _lang["Twitter"] = "Forumeiros_PT";
-            _lang["copied_id"] = "Copiado";
-
-            function open_award(elem) {
-                $(elem).prev('.dd_award').toggleClass('open');
-            }
-            function show_more_awards(element) {
-                let j_element = $(element);
-                let prev = j_element.prev('.dd_award');
-                if (prev.prop('scrollHeight') > prev.prop('clientHeight') || prev.prop('scrollWidth') > prev.prop('clientWidth')) {
-                    j_element.css('display', 'flex');
-                    j_element.on('click', function() {
-                        open_award(this);
-                    });
-                }
-            }
-            $(document).ready(function() {
-                $('.award').on('mouseover', async function() {
-
-                    let offset = {};
-                    let tooltiptext = {};
-                    let tooltip = {};
-
-                    offset = await $(this).offset();
-                    tooltiptext = await $(this).find('.award_tooltiptext');
-                    let propTop = await tooltiptext.css('top');
-                    let propLeft = await tooltiptext.css('left');
-                    tooltip = await $(this).find('.award_tooltiptext').clone();
-                    await tooltip.addClass('left');
-                    await tooltip.css({
-                        position: 'absolute',
-                        top: (offset.top + parseInt(propTop)) + 'px',
-                        left: (offset.left + parseInt(propLeft)) + 'px',
-                        opacity: '1',
-                        visibility: 'visible',
-                        display: 'block',
-                        zIndex: '1000'
-                    });
-                    await $('body').append(tooltip);
-                });
-                $('.award').on('mouseout', function() {
-                    $('body').find('> .award_tooltiptext').remove();
-                });
-
-                $('.dd_award').each(function() {
-                    if ($(this).children().length === 0) {
-                        $(this).hide();
-                    }
-                });
-
-                $('.award_more').each(function() {
-                    show_more_awards($(this));
-                });
-            });
-            //]]>
-        </script>
-        <link rel="stylesheet" type="text/css" href="https://illiweb.com/rs3/87/frm/mentions/tooltipster.css"/>
-        <style type="text/css">
-            #left .446335d {
-                background-color: #ffffff;
-                color: #000000;
-                margin-bottom: 4px;
-                overflow: hidden;
-                padding: 0;
-            }
-
-            #left .446335d span.corners-bottom, #left .446335d span.corners-top {
-                margin: 0;
-            }
-
-            #main .446335d {
-                color: #000000;
-                margin-bottom: 4px;
-                overflow: hidden;
-                padding: 0 10px;
-            }
-
-            #main .446335d span.corners-bottom, #main .446335d span.corners-top {
-                margin: 0 -10px;
-            }
-
-            #main .446335d .main-content iframe {
-                display: block important!;
-                visibility: visible important!
-            }
-
-            div#main-content iframe[src*=adstune]:not([style*=display]), div#main-content iframe[src*=criteo]:not([style*=display]), div#main-content iframe[src*=ad6b]:not([style*=display]), div#main-content iframe[src*=z5x]:not([style*=display]), div#main-content iframe[src*=doubleclick]:not([style*=display]) {
-                display: block !important;
-                visibility: visible !important;
-            }
-
-            div.ud33b9fbb {
-                padding: 0 !important;
-                margin-bottom: 10px !important;
-            }
-        </style>
-        <script>
-            const publicKey = 'BF0evnv1pGCG3bVWbw-fy4ZDMDirksHFfNwMBAMe8X1dhhzJZF3TF9pR3RhPAFM8Q9Cct1LJZ99FwMHA4saVCKU';
-
-            let isSubscribed = false;
-            let swRegistration = null;
-
-            function urlB64ToUint8Array(base64String) {
-                const padding = '='.repeat((4 - base64String.length % 4) % 4);
-                const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-
-                const rawData = window.atob(base64);
-                const outputArray = new Uint8Array(rawData.length);
-
-                for (let i = 0; i < rawData.length; ++i) {
-                    outputArray[i] = rawData.charCodeAt(i);
-                }
-                return outputArray;
-            }
-
-            function updateSubscriptionOnServer(subscription) {
-
-                if (subscription != null) {
-                    const key = subscription.getKey('p256dh');
-                    const token = subscription.getKey('auth');
-                    const contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-
-                    if ('fetch'in window) {
-                        return fetch('ajax/webpush_register.php', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                endpoint: subscription.endpoint,
-                                publicKey: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-                                authToken: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
-                                contentEncoding,
-                            }),
-                        }).then( () => subscription);
-                    } else {
-
-                        var http = new XMLHttpRequest();
-                        var url = 'ajax/webpush_register.php';
-                        http.open('POST', url, true);
-
-                        //Send the proper header information along with the request
-                        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-                        http.onreadystatechange = function() {
-                            //Call a function when the state changes.
-                            if (http.readyState == 4 && http.status == 200) {
-                                alert(http.responseText);
-                            }
-                        }
-
-                        http.send(JSON.stringify({
-                            endpoint: subscription.endpoint,
-                            publicKey: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-                            authToken: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
-                            contentEncoding: contentEncoding,
-                        }));
-
-                    }
+        function mostrarImagemComFadeIn() {
+            const imagem = document.getElementById("imagemFinal");
+            imagem.style.display = "block";
+            let opacidade = 0;
+            const intervalo = setInterval(() => {
+                if (opacidade < 1) {
+                    opacidade += 0.05;
+                    imagem.style.opacity = opacidade;
                 } else {
-                    if ('fetch'in window) {
-
-                        return fetch('ajax/webpush_register.php', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                endpoint: null
-                            }),
-                        }).then( () => subscription);
-                    } else {
-                        var http = new XMLHttpRequest();
-                        var url = 'ajax/webpush_register.php';
-                        http.open('POST', url, true);
-
-                        //Send the proper header information along with the request
-                        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-                        http.onreadystatechange = function() {
-                            //Call a function when the state changes.
-                            if (http.readyState == 4 && http.status == 200) {
-                                alert(http.responseText);
-                            }
-                        }
-
-                        http.send(JSON.stringify({
-                            endpoint: subscription.endpoint,
-                            publicKey: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-                            authToken: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
-                            contentEncoding,
-                        }));
-                    }
+                    clearInterval(intervalo);
                 }
-            }
+            }, 50); // Ajuste a velocidade da transição conforme necessário
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("starsCanvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-            function subscribeUser() {
-
-                const applicationServerKey = urlB64ToUint8Array(publicKey);
-                swRegistration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: applicationServerKey
-                }).then(function(subscription) {
-
-                    updateSubscriptionOnServer(subscription);
-
-                    isSubscribed = true;
-                }).catch(function(err) {
-                    console.log('Failed to subscribe the user: ', err.message);
-                    unsubscribeUser();
+            let hearts = [];
+            for (let i = 0; i < 80; i++) {
+                hearts.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speed: Math.random() * 0.5 + 0.2
                 });
             }
 
-            function unsubscribeUser() {
-                swRegistration.pushManager.getSubscription().then(function(subscription) {
-                    if (subscription) {
-                        return subscription.unsubscribe();
-                    }
-                }).catch(function(error) {
-                    console.log('Error unsubscribing', error);
-                }).then(function() {
-                    updateSubscriptionOnServer(null);
-                    isSubscribed = false;
+            function drawHeart(x, y, size) {
+                ctx.fillStyle = "#8a2be2";
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.bezierCurveTo(x - size, y - size, x - size * 2, y + size, x, y + size * 2);
+                ctx.bezierCurveTo(x + size * 2, y + size, x + size, y - size, x, y);
+                ctx.fill();
+            }
+
+            function animateHearts() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                hearts.forEach(heart => {
+                    drawHeart(heart.x, heart.y, heart.size);
+                    heart.y += heart.speed;
+                    if (heart.y > canvas.height) heart.y = 0;
                 });
-            }
-            if ('serviceWorker'in navigator && 'PushManager'in window) {
-                navigator.serviceWorker.register('/serviceworker.js').then(function(swReg) {
-
-                    swRegistration = swReg;
-
-                })
-            }
-        </script>
-        <script type="text/javascript">
-            $(function() {
-                $("#web_redirect").on("click", function() {
-                    var d = new Date();
-                    var cookie_string = "_mobile_version=0";
-                    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-                    var expires = d.toUTCString();
-                    cookie_string += "; path=/";
-                    cookie_string += "; domain=" + window.location.hostname;
-                    cookie_string += "; expires=" + expires;
-                    document.cookie = cookie_string;
-                    location.reload();
-                });
-            });
-        </script>
-        <script type="text/javascript">
-            $(function() {
-                $("#mobi_redirect").on("click", function() {
-                    var d = new Date();
-                    var cookie_string = "_mobile_version=1";
-                    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-                    var expires = d.toUTCString();
-                    cookie_string += "; domain=" + window.location.hostname;
-                    cookie_string += "; expires=" + expires;
-                    document.cookie = cookie_string;
-                    location.reload();
-                });
-            });
-        </script>
-        <script type="text/javascript" src="https://illiweb.com/rs3/87/frm/twemoji/twemoji.min.js"></script>
-        <script type="text/javascript">
-            //<![CDATA[
-            (function(i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }
-                ,
-                i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            }
-            )(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', '', 'auto');
-            ga('send', 'pageview');
-            ga('set', 'anonymizeIp', true);
-            //]]>
-        </script>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,700i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet"/>
-        <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet"/>
-        <link href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css" rel="stylesheet">
-        <link href="https://kit-pro.fontawesome.com/releases/v6.1.1/css/pro.min.css" rel="stylesheet">
-        <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <style>
-            .alertadim {
-                background: #349AD9 url(https://i.imgur.com/ZODAdEV.png);
-                border-radius: 3px;
-                box-shadow: inset 0 0 1px 1px rgb(0 0 0 / 10%);
-                color: #FFF!important;
-                display: block;
-                font-size: 15px;
-                font-weight: 500;
-                margin: 1em 25px 1em 1em;
-                padding: 15px;
-                text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
-                user-select: none;
-            }
-
-            .caixatopicdim {
-                background: #556b2f url(https://i.imgur.com/ZODAdEV.png);
-                border-radius: 3px;
-                box-shadow: inset 0 0 1px 1px rgb(0 0 0 / 10%);
-                color: #FFF!important;
-                display: block;
-                font-size: 15px;
-                font-weight: 500;
-                margin: 1em 25px -2em 1em;
-                text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
-                user-select: none;
-            }
-
-            .alertadim:before {
-                content: '\f129';
-                font-family: 'Font Awesome 5 Free';
-                font-weight: bold;
-                background-color: #ffffff57;
-                padding: 20px;
-                margin-left: -15px;
-                margin-right: 10px;
-            }
-
-            .reddimalert {
-                background: #D63737 url(https://i.imgur.com/ZODAdEV.png)!important;
-            }
-
-            .reddimalert:before {
-                content: '\f00d';
-            }
-
-            .greendimalert:before {
-                content: '\f00c';
-            }
-
-            .greendimalert {
-                background: #7AB334 url(https://i.imgur.com/ZODAdEV.png)!important;
-            }
-
-            .orangedimalert:before {
-                content: '\f071';
-            }
-
-            .orangedimalert {
-                background: #FF9326 url(https://i.imgur.com/ZODAdEV.png)!important;
-            }
-
-            .topics .lastpost-avatar {
-                margin-top: -10px;
-            }
-
-            .spoiler_content.hidden {
-                display: block;
-            }
-
-            dd.views, dd.posts, dd.topics {
-                color: #00000f!important;
-            }
-
-            .topics .lastpost-avatar {
-                margin-top: -10px;
-            }
-
-            .spoiler_content.hidden {
-                display: block;
-            }
-
-            dd.views, dd.posts, dd.topics {
-                color: #00000f!important;
-            }
-
-            /* Sceditor*/
-            .mod_groups {
-                line-height: 1.5;
-                font-size: 11px;
-                font-weight: 400;
-            }
-
-            .mod_box {
-                -moz-background-clip: padding;
-                -moz-border-radius: 2px;
-                -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
-                -webkit-background-clip: padding-box;
-                -webkit-border-radius: 2px;
-                -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
-                background: #fff;
-                background-clip: padding-box;
-                border: 1px solid #ccc;
-                border-radius: 2px;
-                box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
-                color: #333;
-                width: 200px;
-                line-height: 1;
-                padding: 10px;
-                position: absolute;
-                z-index: 999;
-            }
-
-            .mod_editor_section {
-                background: #f1f1f1;
-                padding: 5px;
-                font-weight: bold;
-                border-bottom: 1px solid #d7d7d7;
-                text-align: left;
-                text-transform: uppercase;
-            }
-
-            .copyright_e {
-                margin-top: 5px;
-                background: #f8f8f8;
-                border-top: 1px solid #d7d7d7;
-                text-align: left;
-                padding: 2px 5px;
-                font-size: 9px;
-                color: #777;
-                text-shadow: 1px 1px 0px white;
-            }
-
-            .mod_editor_message {
-                padding: 2px 5px;
-                text-align: left;
-            }
-
-            .mod_groups {
-                height: 150px;
-                overflow-y: scroll;
-            }
-
-            .mod_groups li {
-                list-style-type: none;
-                margin-left: -40px;
-            }
-
-            .sceditor-button-staff {
-                position: relative;
-            }
-
-            .mod_box {
-                top: 73px;
-            }
-
-            #quick_reply .mod_groups li {
-                margin-left: 0px;
-            }
-
-            #quick_reply .mod_box {
-                top: 35px;
-            }
-
-            .sceditor-button-staff.disabled div {
-                opacity: 1.0 !important;
-                filter: alpha(opacity=100) !important;
-            }
-
-            .sceditor-button-staff div:before {
-                content: "\f3ed";
-                background: linear-gradient(124deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000ff, #4b0082, #8f00ff);
-                -webkit-background-clip: text;
-                background-size: 1800% 1800%;
-                -webkit-text-fill-color: transparent;
-                animation: rainbow 6s ease infinite;
-            }
-
-            @keyframes rainbow {
-                0% {
-                    background-position: 0% 82%;
-                }
-
-                50% {
-                    background-position: 100% 19%;
-                }
-
-                100% {
-                    background-position: 0% 82%;
-                }
-            }
-
-            .sceditor-button-emoticon div:before {
-                content: "\f118";
-            }
-
-            .sceditor-button {
-                position: relative;
-            }
-
-            .sceditor-button * {
-                text-indent: initial!important;
-                color: #000!important;
-                line-height: 15px!important;
-            }
-
-            .sceditor-button div {
-                font-size: 0px!important;
-                background-image: none!important;
-                text-rendering: auto;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-
-            .sceditor-button div:before {
-                font-size: 15px!important;
-                font-family: 'Font Awesome 5 Free';
-                text-indent: initial!important;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            .sceditor-button-bold div:before {
-                content: "\f032";
-            }
-
-            .sceditor-button-embed div:before {
-                content: "\f121";
-            }
-
-            .sceditor-button-youtube div:before {
-                content: "\f167";
-                font-family: "Font Awesome 5 Brands";
-            }
-
-            .sceditor-button-italic div:before {
-                content: "\f033";
-            }
-
-            .sceditor-button-underline div:before {
-                content: "\f0cd";
-            }
-
-            .sceditor-button-strike div:before {
-                content: "\f0cc";
-            }
-
-            .sceditor-button-left div:before {
-                content: "\f036";
-            }
-
-            .sceditor-button-center div:before {
-                content: "\f037";
-            }
-
-            .sceditor-button-right div:before {
-                content: "\f038";
-            }
-
-            .sceditor-button-justify div:before {
-                content: "\f039";
-            }
-
-            .sceditor-button-bulletlist div:before {
-                content: "\f0ca";
-            }
-
-            .sceditor-button-orderedlist div:before {
-                content: "\f0cb";
-            }
-
-            .sceditor-button-horizontalrule div:before {
-                content: "\f068";
-            }
-
-            .sceditor-button-quote div:before {
-                content: "\f10d";
-            }
-
-            .sceditor-button-code div:before {
-                content: "\f1c9";
-            }
-
-            .sceditor-button-faspoiler div:before {
-                content: "\f146";
-            }
-
-            .sceditor-button-fahide div:before {
-                content: "\f070";
-            }
-
-            .sceditor-button-table div:before {
-                content: "\f0ce";
-            }
-
-            .sceditor-button-servimg div:before {
-                content: "\f03e";
-            }
-
-            .sceditor-button-image div:before {
-                content: "\f1c5";
-            }
-
-            .sceditor-button-link div:before {
-                content: "\f0c1";
-            }
-
-            .sceditor-button-youtube div:before {
-                content: "\f431";
-            }
-
-            .sceditor-button-dailymotion {
-                display: none;
-            }
-
-            .sceditor-button-flash div:before {
-                content: "\f008";
-            }
-
-            .sceditor-button-headers div:before {
-                content: "\f1dc";
-            }
-
-            .sceditor-button-size div:before {
-                content: "\f034";
-            }
-
-            .sceditor-button-color div:before {
-                content: "\f1fc";
-            }
-
-            .sceditor-button-font div:before {
-                content: "\f031";
-            }
-
-            .sceditor-button-removeformat div:before {
-                content: "\f024";
-            }
-
-            .sceditor-button-more div:before {
-                content: "\f067";
-            }
-
-            .sceditor-button-subscript div:before {
-                content: "\f12c";
-            }
-
-            .sceditor-button-superscript div:before {
-                content: "\f12b";
-            }
-
-            .sceditor-button-fascroll div:before {
-                content: "\f060";
-            }
-
-            .sceditor-button-faupdown div:before {
-                content: "\f062";
-            }
-
-            .sceditor-button-farand div:before {
-                content: "\f074";
-            }
-
-            .sceditor-button-date div:before {
-                content: "\f133";
-            }
-
-            .sceditor-button-time div:before {
-                content: "\f017";
-            }
-
-            .sceditor-button-pastetext div:before {
-                content: "\f0ea";
-            }
-
-            .sceditor-button-source div:before {
-                content: "\f0c5";
-            }
-
-            .spoiler_content.hidden {
-                display: block;
-            }
-
-            dl.icon.transform[data-transform$="folder_global_announce.png?newmp"]:before, dl.icon.transform[data-transform$="folder_global_announce_new.png?newmp"]:before {
-                content: "\f7a2";
-                font-weight: 600;
-            }
-
-            dl.icon.transform[data-transform$="topic_read_locked.gif?newmp"]:before, dl.icon.transform[data-transform$="topic_unread_locked.png?newmp"]:before {
-                content: "\f023";
-                font-weight: 600;
-            }
-
-            dl.icon.transform[data-transform$="announce_unread.png?newmp"]:before, dl.icon.transform[data-transform$="announce_read.png?newmp"]:before {
-                content: "\f0a1";
-                font-weight: 600;
-            }
-
-            dl.icon.transform[data-transform$="topic_unread.png?newmp"]:before, dl.icon.transform[data-transform$="topic_unread_locked.png?newmp"]:before, dl.icon.transform[data-transform$="announce_unread.png?newmp"]:before, dl.icon.transform[data-transform$="folder_global_announce_new.png?newmp"]:before {
-                animation: UnreadPulse 1.4s infinite;
-                background-color: #c62828!important;
-            }
-
-            dl.icon.transform:before {
-                background: #947333;
-                border-radius: 3px;
-                box-shadow: inset 0 0 1px 1px rgb(0 0 0 / 10%);
-                color: #FFF;
-                content: "\f075";
-                display: block;
-                font-family: "Font Awesome 5 Pro";
-                font-size: 14px;
-                font-style: normal;
-                font-weight: 500;
-                height: 40px;
-                line-height: 40px;
-                position: absolute !important;
-                text-align: center;
-                text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
-                width: 40px;
-                margin-top: 8px;
-                margin-left: 19px;
-            }
-        </style>
-        <div id="dimmer" class="hidden"></div>
-        <script type="text/javascript">
-            //<![CDATA[
-            $(document).ready(function() {
-                $('#main-menu-btn').on('click', function() {
-                    $('#main-menu, #dimmer').toggleClass('hidden visible');
-                });
-                $('#dimmer').on('click', function() {
-                    $('#dimmer').removeClass('visible').addClass('hidden');
-                });
-                $('#user-menu').on('click', function() {
-                    $('#main-user-menu, #dimmer').toggleClass('hidden visible');
-                });
-                $('#dimmer').on('click', function() {
-                    $('.visible').toggleClass('hidden visible');
-                });
-                $(document).on('click', function(event) {
-                    if (!$(event.target).closest('#main-menu, #main-menu-btn, #user-menu, #main-user-menu').length) {
-                        $('#main-menu, #main-user-menu, #dimmer').removeClass('visible').addClass('hidden');
-                    }
-                });
-                $('#main-menu li.has-sub > a').on('click', function() {
-                    $(this).removeAttr('href');
-                    var element = $(this).parent('li');
-                    if (element.hasClass('open')) {
-                        element.removeClass('open');
-                        element.find('li').removeClass('open');
-                        element.find('ul').slideUp(200);
-                    } else {
-                        element.addClass('open');
-                        element.children('ul').slideDown(200);
-                        element.siblings('li').children('ul').slideUp(200);
-                        element.siblings('li').removeClass('open');
-                        element.siblings('li').find('li').removeClass('open');
-                        element.siblings('li').find('ul').slideUp(200);
-                    }
-                });
-                if (_userdata.session_logged_in === 1) {
-                    $('#user-menu .user-avatar img').attr('src', 'https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=png&user=' + _userdata.username + '&action=std,crr=6&direction=2&head_direction=3&img_format=png&gesture=sml&headonly=0&size=b');
-                    $('#user-menu .user-username').append(_userdata.username);
-                    $('#user-menu .user-avatar img').on("error", function() {
-                        $(this).attr('src', 'https://i.servimg.com/u/f87/20/25/92/36/avatar10.png');
-                    });
-                    $('#main-user-menu .main-menu-headline .avatar-big img').attr('src', 'https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=png&user=' + _userdata.username + '&action=std,crr=6&direction=2&head_direction=3&img_format=png&gesture=sml&headonly=0&size=l');
-                    $('#main-user-menu .main-menu-headline .user-username').append(_userdata.username);
-                    $('#main-user-menu .main-menu-headline .avatar-big img').on("error", function() {
-                        $(this).attr('src', 'https://i.servimg.com/u/f87/20/25/92/36/avatar11.png');
-                    });
-                    $('#main-user-menu ul:first li:first a').attr('href', '/u' + _userdata.user_id);
-                    if (_userdata.user_level === 1) {
-                        $('#main-user-menu ul:last li:first').before('<li><a href="/admin" target="_blank"><i class="material-icons">dashboard</i>Painel de Controle</a><li>');
-                    }
-                }
-            });
-            //]]>
-        </script>
-        <link rel="stylesheet" href="http://static.tumblr.com/yiol0h8/AXWn3atj3/tipsy.css" type="text/css"/>
-        <script type="text/javascript" src="http://static.tumblr.com/yiol0h8/GOsn3atjv/jquery.tipsy.js"></script>
-        <script type='text/javascript'>
-            $(function() {
-                $('.tool-tip').tipsy({
-                    fade: true,
-                    gravity: 's'
-                });
-            });
-        </script>
-    </head>
-    <body id="modernbb">
-        <div id="page-header">
-            <div class="bannerdim"></div>
-            <header>
-                <div class="logo">
-                    <div id="logo-text">
-                        <div style="display: inline-block;">
-                            <a class="linkdim" href="/forum">
-                                <span>
-                                    
-                                    
-                                </span>
-                            </a>
-                            <a class="linkdim" href="/memberlist">
-                                <span>
-                                    
-                                    
-                                </span>
-                            </a>
-                            <a class="linkdim" href="/groups">
-                                <span>
-                            
-                                </span>
-                            </a>
-                            <!--
-       <a class="linkdim" href="https://systemdim.com/"><span><i class="fa-brands fa-connectdevelop"></i> System</span></a> -->
-                            <div></div>
-                        </div>
-                    
-                        <style>
-                            .redes-sociais {
-                                float: left;
-                                margin-top: 15px;
-                                margin-left: 20px;
-                            }
-
-                            .redes-sociais a {
-                                display: inline-block;
-                                margin-right: 10px;
-                                color: #fff;
-                                font-size: 24px;
-                            }
-
-                            span.fab.fa-whatsapp {
-                                background: #c3c3c34f;
-                                color: white;
-                                padding: 8px;
-                                border-radius: 8px;
-                                font-size: 20px;
-                                cursor: pointer;
-                            }
-
-                            span.fab.fa-whatsapp:hover {
-                                background-color: #25D366;
-                                border: none;
-                                box-shadow: inset 0 3px rgb(255 255 255 / 20%), inset 0 -4px rgb(0 0 0 / 10%), inset 0 -25px rgb(0 0 0 / 3%), inset 0 0 0 1px rgb(0 0 0 / 25%);
-                            }
-
-                            span.fab.fa-instagram {
-                                background: #c3c3c34f;
-                                color: white;
-                                padding: 8px;
-                                border-radius: 8px;
-                                font-size: 20px;
-                                cursor: pointer;
-                            }
-
-                            span.fab.fa-instagram:hover {
-                                background: linear-gradient(-165deg,#405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
-                                border: none;
-                                transition: all .1s;
-                                box-shadow: inset 0 3px rgb(255 255 255 / 20%), inset 0 -4px rgb(0 0 0 / 10%), inset 0 -25px rgb(0 0 0 / 3%), inset 0 0 0 1px rgb(0 0 0 / 25%);
-                            }
-
-                            span.fab.fa-discord {
-                                background: #c3c3c34f;
-                                color: white;
-                                padding: 8px;
-                                border-radius: 8px;
-                                font-size: 20px;
-                                cursor: pointer;
-                            }
-
-                            span.fab.fa-discord:hover {
-                                background-color: #7289DA;
-                                border: none;
-                                box-shadow: inset 0 3px rgb(255 255 255 / 20%), inset 0 -4px rgb(0 0 0 / 10%), inset 0 -25px rgb(0 0 0 / 3%), inset 0 0 0 1px rgb(0 0 0 / 25%);
-                            }
-                        </style>
-                                                                
-                                                                </div>
-                                                                <div class="content">
-                                                                    <div>
-                                                                        <div style="padding:2%;border:1px solid #003300;border-radius:5px;border-left:2rem solid #003300;font-family:Poppins, sans-serif;">
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <div align="center">
-                                                                                <font face="Verdana">
-                                                                                    <font color="#ffcc33">
-                                                                                        <span style="font-size: 24px; line-height: normal">
-                                                                                            <strong>DEPARTAMENTO DE INTELIGÊNCIA MILITAR</strong>
-                                                                                        </span>
-                                                                                    </font>
-                                                                                </font>
-                                                                            </div>
-                                                                            <br/>
-                                                                            <div align="center">
-                                                                                <font face="Verdana">
-                                                                                    <span style="font-size: 18px; line-height: normal">
-                                                                                        <strong>
-                                                                                            <font color="#006600">Conselho de Liderança Militar</font>
-                                                                                        </strong>
-                                                                                    </span>
-                                                                                </font>
-                                                                            </div>
-                                                                            <br/>
-                                                                            <div align="center">
-                                                                                <a href="https://servimg.com/r/4720259997/dim10.png" target='_blank' rel='nofollow'>
-                                                                                    <img src="https://i.servimg.com/u/f47/20/25/99/97/dim10.png" alt="[CDO] Avaliação de Oficiais [BETA] Dim10"/>
-                                                                                </a>
-                                                                                <a href="https://servimg.com/r/7020261355/cog_210.png" target='_blank' rel='nofollow'>
-                                                                                    <img src="https://i.servimg.com/u/f70/20/26/13/55/cog_210.png" alt="[CDO] Avaliação de Oficiais [BETA] Cog_210"/>
-                                                                                </a>
-                                                                            </div>
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <i>
-                                                                                <strong>
-                                                                                    A Presidência do <font color="#006600">Conselho de Liderança Militar</font>
-                                                                                    decidiu que acontecerá uma reunião a cada quinzena, a fim de dar início a avaliação do Corpo de Oficiais.
-                                                                                </strong>
-                                                                            </i>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            Acontecendo da seguinte maneira, exemplos:<br/>
-                                                                            <br/>
-                                                                            <strong>Militar (1)</strong>
-                                                                            planejará atividades com os seguintes oficiais:<br/>
-                                                                            <br/>
-                                                                            <font color="#FF9933">
-                                                                                <strong>Tenente</strong>
-                                                                            </font>
-                                                                            Alberto<br/>
-                                                                            <font color="#FF9933">
-                                                                                <strong>Tenente</strong>
-                                                                            </font>
-                                                                            Juliana<br/>
-                                                                            <font color="#FF0000">
-                                                                                <strong>Capitão</strong>
-                                                                            </font>
-                                                                            José<br/>
-                                                                            <font color="#6600FF">
-                                                                                <strong>Major</strong>
-                                                                            </font>
-                                                                            Carlos<br/>
-                                                                            <br/>
-                                                                            <strong>Militar (2)</strong>
-                                                                            planejará atividades com os seguintes oficiais:<br/>
-                                                                            <br/>
-                                                                            <font color="#FF0000">
-                                                                                <strong>Capitão</strong>
-                                                                            </font>
-                                                                            Rodrigo<br/>
-                                                                            <font color="#FF0000">
-                                                                                <strong>Capitão</strong>
-                                                                            </font>
-                                                                            Alberto<br/>
-                                                                            <font color="#6600FF">
-                                                                                <strong>Major</strong>
-                                                                            </font>
-                                                                            Juscelino<br/>
-                                                                            <font color="#FF9933">
-                                                                                <strong>Tenente</strong>
-                                                                            </font>
-                                                                            Augusto<br/>
-                                                                            <br/>
-                                                                            <strong>Militar (3)</strong>
-                                                                            planejará atividades com os seguintes oficiais:<br/>
-                                                                            <br/>
-                                                                            <font color="#6600FF">
-                                                                                <strong>Major</strong>
-                                                                            </font>
-                                                                            Igor<br/>
-                                                                            <font color="#FF9933">
-                                                                                <strong>Tenente</strong>
-                                                                            </font>
-                                                                            Joao<br/>
-                                                                            <font color="#FF0000">
-                                                                                <strong>Capitão</strong>
-                                                                            </font>
-                                                                            André<br/>
-                                                                            <font color="#6600FF">
-                                                                                <strong>Major</strong>
-                                                                            </font>
-                                                                            Nascimento<br/>
-                                                                            <br/>
-                                                                            Acontecendo, de praxe:<br/>
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <div style="font-size:14px;color:#fff;background:#003300;padding:10px;border-radius:5px;width:30%;text-align:center;margin:auto;font-weight:bold;">PRIMEIRA SEMANA:</div>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <font color="#FF0000">
-                                                                                <span style="font-size: 13px; line-height: normal">
-                                                                                    <strong>
-                                                                                        (Os Avaliadores do Conselho de Liderança Militar enviará uma Mensagem Privada no fórum, com um formulário de preenchimento de uma espécie de <strong>''autoavaliação''</strong>
-                                                                                        , utilizando o seguinte modelo)
-                                                                                    </strong>
-                                                                                </span>
-                                                                            </font>
-                                                                            ;<br/>
-                                                                            <br/>
-                                                                            <dl class="codebox">
-                                                                                <dt>Código:</dt>
-                                                                                <dd>
-                                                                                    <code>
-                                                                                        &lt;div style=&quot;padding &#58;2%;border &#58;1px solid #003300;border-radius &#58;5px;border-left &#58;2rem solid #003300;font-family &#58;Poppins, sans-serif;&quot;&gt;<br/>
-                                                                                        &#91;center &#93;&#91;font=Verdana &#93;&#91;color=#ffcc33 &#93;&#91;size=24 &#93;&#91;b &#93;DEPARTAMENTO DE INTELIGÊNCIA MILITAR &#91;/b &#93;&#91;/size &#93;&#91;/color &#93;&#91;/font &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;font=Verdana &#93;&#91;size=18 &#93;&#91;b &#93;&#91;color=#006600 &#93;CONSELHO DE LIDERANÇA MILITAR &#91;/color &#93;&#91;/b &#93;&#91;/size &#93;&#91;/font &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;img &#93;https &#58;//i.servimg.com/u/f47/20/25/99/97/dim10.png &#91;/img &#93;&#91;img &#93;https &#58;//i.servimg.com/u/f70/20/26/13/55/cog_210.png &#91;/img &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;hr &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;size=24 &#93;&#91;b &#93;APOSTILA PARA AVALIADOS &#91;/b &#93;&#91;/size &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;hr &#93;<br/>
-                                                                                        <br/>
-                                                                                        Olá militar, sou o &#91;b &#93;&#123;USERNAME &#125;&#91;/b &#93;e estou enviando esta Mensagem Privada para dar início ao seu processo avaliativo, responda a estas indagações a fim de proporcionar a seu avaliador informações cruciais.<br/>
-                                                                                        <br/>
-                                                                                        &#91;hr &#93;<br/>
-                                                                                        <br/>
-                                                                                        1. &#91;b &#93;Como você se enxerga como militar?&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        2. &#91;b &#93;Se você pudesse mudar algo em seus atributos, o que mudaria?&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        3. &#91;b &#93;Cite pontos negativos e positivos sobre você.&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        Responda a esta mensagem utilizando esse modelo &#58;<br/>
-                                                                                        <br/>
-                                                                                        <br/>
-                                                                                        &#91;code &#93;&lt;div style=&quot;padding &#58;2%;border &#58;1px solid #003300;border-radius &#58;5px;border-left &#58;2rem solid #003300;font-family &#58;Poppins, sans-serif;&quot;&gt;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;font=Verdana &#93;&#91;color=#ffcc33 &#93;&#91;size=24 &#93;&#91;b &#93;DEPARTAMENTO DE INTELIGÊNCIA MILITAR &#91;/b &#93;&#91;/size &#93;&#91;/color &#93;&#91;/font &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;font=Verdana &#93;&#91;size=18 &#93;&#91;b &#93;&#91;color=#006600 &#93;CONSELHO DE LIDERANÇA MILITAR/color &#93;&#91;/b &#93;&#91;/size &#93;&#91;/font &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;center &#93;&#91;img &#93;https &#58;//i.servimg.com/u/f47/20/25/99/97/dim10.png &#91;/img &#93;&#91;img &#93;https &#58;//i.servimg.com/u/f70/20/26/13/55/cog_210.png &#91;/img &#93;&#91;/center &#93;<br/>
-                                                                                        <br/>
-                                                                                        &#91;hr &#93;<br/>
-                                                                                        <br/>
-                                                                                        Olá militar, sou o &#91;b &#93;&#123;USERNAME &#125;&#91;/b &#93;e estou respondendo o questionário que foi-me enviado.<br/>
-                                                                                        <br/>
-                                                                                        &#91;hr &#93;<br/>
-                                                                                        <br/>
-                                                                                        1. &#91;b &#93;Como você se enxerga como militar?&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        2. &#91;b &#93;Se você pudesse mudar algo em seus atributos, o que mudaria?&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        3. &#91;b &#93;Cite pontos negativos e positivos sobre você.&#91;/b &#93;<br/>
-                                                                                        R &#58;<br/>
-                                                                                        <br/>
-                                                                                        &lt;/div &gt;<br/>
-                                                                                        &#91;/code &#93;<br/>
-                                                                                        <br/>
-                                                                                        <br/>
-                                                                                        &#91;right &#93;&#91;i &#93;Atenção, o Conselho de Liderança Militar preza pela veracidade acerca das respostas em questões, priorizando sempre a sinceridade acima de tudo,<br/>
-                                                                                        Atenciosamente, Conselho de Liderança Militar &#91;/i &#93;&#91;/right &#93;<br/>&lt;/div &gt;
-                                                                                    </code>
-                                                                                </dd>
-                                                                            </dl>
-                                                                            <br/>
-                                                                            <strong>Este questionário deverá ser enviado pelos Membros do Conselho de Liderança Militar aos militares designados a eles.</strong>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <strong>- Será entregue, pelos coordenadores, um formulário sobre a designação da reunião.</strong>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <i>Após a primeira instrução da Presidência, vocês têm 1 semana para conhecer os militares que estão sendo avaliados, proporcionando atividades com esses militares com o objetivo de anotar informações positivas, negativas, críticas dissertativas que terão que estar entregues até a quinzena, por obrigação. </i>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <span style="font-size: 10px; line-height: normal">
-                                                                                <font color="#FF0000">
-                                                                                    <strong>Após todos os militares preencherem o formulário, vocês conversarão com todos eles pelo jogo ou até mesmo pelo whatsapp, desenvolvendo uma conversa a fim de conhecerem os militares avaliados, se aprofundando nas questões abordadas do formulário.</strong>
-                                                                                </font>
-                                                                            </span>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <div style="font-size:14px;color:#fff;background:#003300;padding:10px;border-radius:5px;width:30%;text-align:center;margin:auto;font-weight:bold;">SEGUNDA SEMANA:</div>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <strong>- Entrega do formulário dissertativo;</strong>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <i>Após conhecerem os militares que estão sendo avaliados na primeira semana, usarão suas anotações, seus sensos críticos e os sensos de justiça para promover uma descrição dissertativas acerca dos militares dos quais foram designados.</i>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <div style="font-size:14px;color:#fff;background:#003300;padding:10px;border-radius:5px;width:30%;text-align:center;margin:auto;font-weight:bold;">REUNIÃO (QUINZENA)</div>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <i>Após o batimento da quinzena, acontecerá uma reunião com vocês, membro do CLM, onde discutiremos sobre os militares avaliados, discutindo sobre os principais aspectos dos temas discutidos durante os quinze dias.</i>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <span style="font-size: 10px; line-height: normal">
-                                                                                <font color="#FF0000">
-                                                                                    <strong>Será designado um membro do Conselho de Liderança Militar para realizar uma ata da reunião, a fim de registrar o que foi dito nesta, seus principais tópicos abordados e coisas ditas a respeito dos militares que estavam sendo avaliados.</strong>
-                                                                                </font>
-                                                                            </span>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <hr/>
-                                                                            <br/>
-                                                                            <br/>
-                                                                            <div align="right">
-                                                                                <i>Atenciosamente, Presidência do Conselho de Liderança Militar.</i>
-                                                                                <br/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="edited-message"></div>
-                                                            </div>
-                                                            <aside class="postprofile" id="profile790">
-                                                            <!--
- div class="online2"></div-->
-</br>
-<dl>
-    <dt>
-        <div class="postprofile-name">
-            <a href="/u3">
-                
+                requestAnimationFrame(animateHearts);
+            }
+            animateHearts();
+        });
+    </script>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            overflow-y: auto; /* Permitir rolagem */
+            background-color: black;
+            color: white;
+        }
+        #contadorPagina { 
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+        #starsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        #telaInicial {
+            position: fixed; /* Deixando a tela inicial fixa no centro */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease-in-out;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #8a2be2;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #6a1bb9;
+        }
+        button:active {
+            background-color: #4a0e85;
+        }
+        #fotoEspaco {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 30%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 10px;
+        }
+        #mensagem {
+            color: white;
+            font-size: 18px;
+            margin-top: 20px;
+            text-align: center;
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-bottom: 20px;
+        }
+        #imagemFinal {
+            display: none;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out; /* Opacidade gradual */
+            width: 30%; /* Tamanho ajustado para ser igual à primeira imagem */
+            max-width: 600px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto; /* Centralizando a imagem */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starsCanvas"></canvas>
+    <div id="telaInicial">
+        <button onclick="iniciarContador()">CLIQUE AQUI</button>
+    </div>
+    <div id="contadorPagina">
+        <img id="fotoEspaco" src="images/foto-principal.jpg" alt="Sua Foto Aqui">
+        <p id="contador">Carregando...</p>
+        <button onclick="escreverTextoComEfeito('mensagem', 'Lembra desse dia? Se não me engano, foi num domingo, que você veio direto do trabalho me encontrar na rua, fomos no mercado e logo depois pra casa. Tomamos banho juntos e fizemos muito sexo, logo depois fomos comer fora. Até agora acho que é a nossa foto (ou pelo menos a sua) preferida.', 100)">CLIQUE AQUI</button>
+        <div id="mensagem"></div>
+        <img id="imagemFinal" src="images/primeirafoto-zoada.jpg" alt="Imagem Final">
+    </div>
+</body>
+</html>
