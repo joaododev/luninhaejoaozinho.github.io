@@ -1,201 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contador de Tempo</title>
-    <script>
-        function iniciarContador() {
-            document.getElementById("telaInicial").style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById("telaInicial").style.display = "none";
-                document.getElementById("contadorPagina").style.display = "block";
-                document.getElementById("contadorPagina").style.opacity = "1";
-                atualizarContador();
-                setInterval(atualizarContador, 1000);
-            }, 300);
-        }
-        
-        function atualizarContador() {
-            const dataInicio = new Date("2024-12-07T00:00:00");
-            const agora = new Date();
-            let diferenca = Math.floor((agora - dataInicio) / 1000);
-            
-            const anos = Math.floor(diferenca / (365 * 24 * 60 * 60));
-            diferenca %= 365 * 24 * 60 * 60;
-            const meses = Math.floor(diferenca / (30 * 24 * 60 * 60));
-            diferenca %= 30 * 24 * 60 * 60;
-            const semanas = Math.floor(diferenca / (7 * 24 * 60 * 60));
-            diferenca %= 7 * 24 * 60 * 60;
-            const dias = Math.floor(diferenca / (24 * 60 * 60));
-            diferenca %= 24 * 60 * 60;
-            const horas = Math.floor(diferenca / (60 * 60));
-            diferenca %= 60 * 60;
-            const minutos = Math.floor(diferenca / 60);
-            const segundos = diferenca % 60;
-            
-            document.getElementById("contador").innerText = 
-                `${anos} anos, ${meses} meses, ${semanas} semanas, ${dias} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para o Amor da Minha Vida 💜</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #a18cd1, #fbc2eb);
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        function escreverTextoComEfeito(elementId, texto, velocidade) {
-            let i = 0;
-            const elemento = document.getElementById(elementId);
-            elemento.innerHTML = "";
-            function escrever() {
-                if (i < texto.length) {
-                    elemento.innerHTML += texto.charAt(i);
-                    i++;
-                    setTimeout(escrever, velocidade);
-                } else {
-                    // Após a digitação do texto, mostramos a imagem com fade-in
-                    mostrarImagemComFadeIn();
-                }
-            }
-            escrever();
-        }
+    .titulo {
+      text-align: center;
+      margin-top: 40px;
+      color: #fff;
+      font-size: 2em;
+    }
 
-        function mostrarImagemComFadeIn() {
-            const imagem = document.getElementById("imagemFinal");
-            imagem.style.display = "block";
-            let opacidade = 0;
-            const intervalo = setInterval(() => {
-                if (opacidade < 1) {
-                    opacidade += 0.05;
-                    imagem.style.opacity = opacidade;
-                } else {
-                    clearInterval(intervalo);
-                }
-            }, 50); // Ajuste a velocidade da transição conforme necessário
-        }
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            const canvas = document.getElementById("starsCanvas");
-            const ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    .card-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 60px;
+      padding-bottom: 100px;
+    }
 
-            let hearts = [];
-            for (let i = 0; i < 80; i++) {
-                hearts.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 3 + 1,
-                    speed: Math.random() * 0.5 + 0.2
-                });
-            }
+    .card {
+      width: 180px;
+      height: 250px;
+      perspective: 1000px;
+      cursor: pointer;
+      animation: rotate 5s linear infinite;
+      position: relative;
+    }
 
-            function drawHeart(x, y, size) {
-                ctx.fillStyle = "#8a2be2";
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.bezierCurveTo(x - size, y - size, x - size * 2, y + size, x, y + size * 2);
-                ctx.bezierCurveTo(x + size * 2, y + size, x + size, y - size, x, y);
-                ctx.fill();
-            }
+    @keyframes rotate {
+      0% { transform: rotateY(0); }
+      100% { transform: rotateY(360deg); }
+    }
 
-            function animateHearts() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                hearts.forEach(heart => {
-                    drawHeart(heart.x, heart.y, heart.size);
-                    heart.y += heart.speed;
-                    if (heart.y > canvas.height) heart.y = 0;
-                });
-                requestAnimationFrame(animateHearts);
-            }
-            animateHearts();
-        });
-    </script>
-    <style>
-        body { 
-            text-align: center; 
-            font-family: Arial, sans-serif; 
-            margin: 0;
-            overflow-y: auto; /* Permitir rolagem */
-            background-color: black;
-            color: white;
-        }
-        #contadorPagina { 
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            padding-bottom: 20px;
-            text-align: center;
-        }
-        #starsCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-        }
-        #telaInicial {
-            position: fixed; /* Deixando a tela inicial fixa no centro */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease-in-out;
-        }
-        button {
-            padding: 15px 30px;
-            font-size: 20px;
-            cursor: pointer;
-            border: none;
-            background-color: #8a2be2;
-            color: white;
-            font-weight: bold;
-            border-radius: 10px;
-            transition: background-color 0.3s ease-in-out;
-        }
-        button:hover {
-            background-color: #6a1bb9;
-        }
-        button:active {
-            background-color: #4a0e85;
-        }
-        #fotoEspaco {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            width: 30%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 10px;
-        }
-        #mensagem {
-            color: white;
-            font-size: 18px;
-            margin-top: 20px;
-            text-align: center;
-            width: 80%;
-            margin-left: 10%;
-            margin-right: 10%;
-            margin-bottom: 20px;
-        }
-        #imagemFinal {
-            display: none;
-            margin-top: 20px;
-            opacity: 0;
-            transition: opacity 2s ease-in-out; /* Opacidade gradual */
-            width: 30%; /* Tamanho ajustado para ser igual à primeira imagem */
-            max-width: 600px;
-            height: auto;
-            border-radius: 10px;
-            margin: 0 auto; /* Centralizando a imagem */
-        }
-    </style>
+    .card .front, .card .back {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: #6a0dad;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3em;
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: 0 0 20px #fff2;
+    }
+
+    .card .front {
+      background: radial-gradient(circle, #b983ff, #7b2cbf);
+    }
+
+    .card .back {
+      transform: rotateY(180deg);
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    .card.revelada {
+      animation: none;
+      transform: rotateY(180deg);
+      transition: transform 0.8s;
+    }
+
+    .card.revelada .front {
+      display: none;
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .texto-revelado {
+      display: none;
+      color: white;
+      font-size: 0.9em;
+      text-align: center;
+    }
+
+    /* Corações animados */
+    .hearts-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      color: #e0b3ff;
+      font-size: 20px;
+      animation: fall 8s linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-    <canvas id="starsCanvas"></canvas>
-    <div id="telaInicial">
-        <button onclick="iniciarContador()">CLIQUE AQUI</button>
+  <div class="hearts-container"></div>
+
+  <h1 class="titulo">Clique nas cartas misteriosas...</h1>
+
+  <div class="card-grid">
+    <div class="card" onclick="revelarCarta(this, 'foto1.jpg', 'texto1')">
+      <div class="front">❓</div>
+      <div class="back">
+        <img src="" alt="Foto 1" />
+        <p class="texto-revelado" id="texto1">Seu texto para a foto 1.</p>
+      </div>
     </div>
-    <div id="contadorPagina">
-        <img id="fotoEspaco" src="images/foto-principal.jpg" alt="Sua Foto Aqui">
-        <p id="contador">Carregando...</p>
-        <button onclick="escreverTextoComEfeito('mensagem', 'Lembra desse dia? Se não me engano, foi num domingo, que você veio direto do trabalho me encontrar na rua, fomos no mercado e logo depois pra casa. Tomamos banho juntos e fizemos muito sexo, logo depois fomos comer fora. Até agora acho que é a nossa foto (ou pelo menos a sua) preferida.', 100)">CLIQUE AQUI</button>
-        <div id="mensagem"></div>
-        <img id="imagemFinal" src="images/primeirafoto-zoada.jpg" alt="Imagem Final">
+    <div class="card" onclick="revelarCarta(this, 'foto2.jpg', 'texto2')">
+      <div class="front">❓</div>
+      <div class="back">
+        <img src="" alt="Foto 2" />
+        <p class="texto-revelado" id="texto2">Seu texto para a foto 2.</p>
+      </div>
     </div>
+    <div class="card" onclick="revelarCarta(this, 'foto3.jpg', 'texto3')">
+      <div class="front">❓</div>
+      <div class="back">
+        <img src="" alt="Foto 3" />
+        <p class="texto-revelado" id="texto3">Seu texto para a foto 3.</p>
+      </div>
+    </div>
+    <div class="card" onclick="revelarCarta(this, 'foto4.jpg', 'texto4')">
+      <div class="front">❓</div>
+      <div class="back">
+        <img src="" alt="Foto 4" />
+        <p class="texto-revelado" id="texto4">Seu texto para a foto 4.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function revelarCarta(cardElement, imagem, textoId) {
+      if (cardElement.classList.contains('revelada')) return;
+
+      cardElement.classList.add('revelada');
+      const imgTag = cardElement.querySelector('img');
+      imgTag.src = imagem;
+
+      setTimeout(() => {
+        document.getElementById(textoId).style.display = 'block';
+      }, 1000);
+    }
+
+    const container = document.querySelector('.hearts-container');
+    function criarCoracao() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '💜';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+      heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+      container.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+    setInterval(criarCoracao, 300);
+  </script>
 </body>
 </html>
