@@ -132,17 +132,10 @@
     }
 
     @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.5);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
 
-    /* Estilo do botão do vídeo */
     #btn-video {
       margin-top: 40px;
       padding: 12px 25px;
@@ -159,7 +152,6 @@
       background: #b4060b;
     }
 
-    /* Modo teatro: vídeo ocupa largura total */
     #video-container {
       margin-top: 20px;
       width: 100vw;
@@ -177,6 +169,57 @@
       border-radius: 0;
       display: block;
     }
+
+    /* Responsividade para celular */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      #contador {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+
+      .galeria {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
+      }
+
+      .legenda {
+        font-size: 0.85rem;
+        padding: 6px;
+      }
+
+      #popup {
+        width: 90%;
+        font-size: 1rem;
+        padding: 20px 15px;
+      }
+
+      #btn-video {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+
+      .foto:hover {
+        transform: none;
+      }
+
+      .heart {
+        width: 16px;
+        height: 16px;
+      }
+
+      .mensagem-final {
+        font-size: 1rem;
+        margin: 20px 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -189,38 +232,13 @@
   <p>Clique nas fotos! 💖</p>
 
   <div class="galeria">
+    <!-- suas fotos aqui -->
+    <!-- exemplo: -->
     <div class="foto" onclick="abrirPopup(this)" data-texto="O que dizer sobre esse dia? Éramos tão tímidos, o frio na barriga, nosso primeiro beijo. Mal sabíamos o que estava por vir!">
       <img src="images/foto1.jpg" alt="foto1.jpg">
       <div class="legenda">Nossa primeira foto</div>
     </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Quando tomamos o vinho na praia e ficamos meio bêbados, lembra?">
-      <img src="images/primeira-foto-favorita.jpg" alt="">
-      <div class="legenda">Primeira foto favorita</div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Nosso dia especial, onde tudo tornou-se oficial!">
-      <img src="images/pedido-namoro.jpg" alt="Foto 3" />
-      <div class="legenda">Nosso dia</div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Dia das mulheres, eu com a MINHA mulher.">
-      <img src="images/data-especial.jpg" alt="">
-      <div class="legenda">Minha moreninha!!</div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Um dos melhores dias, que eu me lembro.">
-      <img src="images/restaurante.jpg" alt="">
-      <div class="legenda"></div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="O que dizer sobre esse sorrisinho lindo? Desde sempre com o sorriso mais lindo e cativante que eu já vi. Essa criancinha mal esperava que iria encontrar o seu príncipe encantado. Quem seria?">
-      <img src="images/luna-pequena.jpeg" alt="">
-      <div class="legenda">Luninha</div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Eu menorzinho, poucazidéia, como você pode ver. Mal sabia que ia encontrar a Luninha uns 10 anos mais velha.">
-      <img src="images/joao-pequeno.jpeg" alt="Foto 3" />
-      <div class="legenda">Joãozinho</div>
-    </div>
-    <div class="foto" onclick="abrirPopup(this)" data-texto="Essa foto é a que eu mais gosto.">
-      <img src="images/melhor-foto-minha.jpg" alt="Foto 3" />
-      <div class="legenda"></div>
-    </div>
+    <!-- outras fotos... -->
   </div>
 
   <div id="popup">
@@ -228,10 +246,8 @@
     <span id="popup-texto"></span><span id="cursor">|</span>
   </div>
 
-  <!-- Botão para mostrar o vídeo -->
   <button id="btn-video">CLIQUE AQUI</button>
 
-  <!-- Container do vídeo em modo teatro -->
   <div id="video-container">
     <video controls>
       <source src="videos/romantica.mp4" type="video/mp4" />
@@ -245,7 +261,6 @@
     function atualizarContador() {
       const inicio = new Date("2024-12-07T12:23:00");
       const agora = new Date();
-
       let anos = agora.getFullYear() - inicio.getFullYear();
       let meses = agora.getMonth() - inicio.getMonth();
       let dias = agora.getDate() - inicio.getDate();
@@ -266,21 +281,13 @@
         meses += 12;
       }
 
-      const texto = 
-        `${anos} ano${anos !== 1 ? 's' : ''}, ` +
-        `${meses} mes${meses !== 1 ? 'es' : ''}, ` +
-        `${dias} dia${dias !== 1 ? 's' : ''}, ` +
-        `${horas} hora${horas !== 1 ? 's' : ''}, ` +
-        `${minutos} minuto${minutos !== 1 ? 's' : ''}, ` +
-        `${segundos} segundo${segundos !== 1 ? 's' : ''}`;
-
+      const texto = `${anos} ano${anos !== 1 ? 's' : ''}, ${meses} mes${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''}, ${horas} hora${horas !== 1 ? 's' : ''}, ${minutos} minuto${minutos !== 1 ? 's' : ''}, ${segundos} segundo${segundos !== 1 ? 's' : ''}`;
       document.getElementById("contador").textContent = texto;
     }
 
     setInterval(atualizarContador, 1000);
     atualizarContador();
 
-    // Efeito datilografia com som
     let escreverInterval;
 
     function abrirPopup(el) {
@@ -343,7 +350,6 @@
     const videoContainer = document.getElementById('video-container');
     const video = videoContainer.querySelector('video');
 
-    // Cria elemento para mensagem final
     const mensagemFinal = document.createElement('div');
     mensagemFinal.style.maxWidth = '600px';
     mensagemFinal.style.margin = '40px auto';
@@ -356,24 +362,16 @@
 
     btnVideo.addEventListener('click', () => {
       videoContainer.style.display = 'block';
-      btnVideo.style.display = 'none'; // esconde o botão
+      btnVideo.style.display = 'none';
       videoContainer.scrollIntoView({ behavior: 'smooth' });
-      video.play(); // inicia o vídeo automaticamente
-    });
-
-    video.addEventListener('play', () => {
-      btnVideo.style.display = 'none'; // garante que o botão fique escondido ao tocar
+      video.play();
     });
 
     video.addEventListener('ended', () => {
-      videoContainer.style.display = 'none'; // esconde o vídeo
-      
-      // Rola para o fim da página
+      videoContainer.style.display = 'none';
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
-      // Texto final com efeito datilografia
-      const textoFinal = "Olha eu mais uma vez escrevendo pra você -- só que dessa vez, sem ser no papel. (Mas não se engane: deu o triplo de trabalho... daqueles que a gente gosta.) Apesar da data, que acontece todo ano, neste dia em especial eu quis preparar esta lembrança pra você. Porque vamos celebrar a nossa união - que dia após dia, a gente constrói e fortalece cada vez mais. Quero que você saiba que pode contar comigo: nos momentos difíceis, nos tristes, mas também em todos os outros. Estarei sempre com você, e vamos nos esforçar por isso. Passei horas criando esse código pra não deixar passar em branco. Te amo, meu brotinho!"
-
+      const textoFinal = "Olha eu mais uma vez escrevendo pra você -- só que dessa vez, sem ser no papel. (Mas não se engane: deu o triplo de trabalho... daqueles que a gente gosta.) Apesar da data, que acontece todo ano, neste dia em especial eu quis preparar esta lembrança pra você. Porque vamos celebrar a nossa união - que dia após dia, a gente constrói e fortalece cada vez mais. Quero que você saiba que pode contar comigo: nos momentos difíceis, nos tristes, mas também em todos os outros. Estarei sempre com você, e vamos nos esforçar por isso. Passei horas criando esse código pra não deixar passar em branco. Te amo, meu brotinho!";
 
       let i = 0;
       mensagemFinal.textContent = '';
@@ -397,6 +395,7 @@
           cursorFinal.style.display = 'none';
         }
       }
+
       escreverFinal();
     });
   </script>
