@@ -2,181 +2,403 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Para o Amor da Minha Vida 💜</title>
+  <title>Nosso Amor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #a18cd1, #fbc2eb);
+      background: #141414;
+      color: #e50914;
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+      padding: 30px 20px;
       overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #contador {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    p {
+      color: #ffffffb3;
+      font-size: 1.2rem;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .foto {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
       position: relative;
-    }
-
-    .titulo {
-      text-align: center;
-      margin-top: 40px;
-      color: #fff;
-      font-size: 2em;
-    }
-
-    .card-grid {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 30px;
-      margin-top: 60px;
-      padding-bottom: 100px;
-    }
-
-    .card {
-      width: 180px;
-      height: 250px;
-      perspective: 1000px;
       cursor: pointer;
-      animation: rotate 5s linear infinite;
-      position: relative;
     }
 
-    @keyframes rotate {
-      0% { transform: rotateY(0); }
-      100% { transform: rotateY(360deg); }
+    .foto:hover {
+      transform: scale(1.05);
     }
 
-    .card .front, .card .back {
+    .foto img {
       width: 100%;
-      height: 100%;
-      border-radius: 20px;
-      background: #6a0dad;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3em;
-      backface-visibility: hidden;
+      height: auto;
+      display: block;
+    }
+
+    .legenda {
       position: absolute;
-      top: 0;
-      left: 0;
-      box-shadow: 0 0 20px #fff2;
-    }
-
-    .card .front {
-      background: radial-gradient(circle, #b983ff, #7b2cbf);
-    }
-
-    .card .back {
-      transform: rotateY(180deg);
-      flex-direction: column;
-      padding: 10px;
-    }
-
-    .card.revelada {
-      animation: none;
-      transform: rotateY(180deg);
-      transition: transform 0.8s;
-    }
-
-    .card.revelada .front {
-      display: none;
-    }
-
-    .card img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .texto-revelado {
-      display: none;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
       color: white;
-      font-size: 0.9em;
-      text-align: center;
+      width: 100%;
+      padding: 8px;
+      font-size: 0.95rem;
     }
 
-    /* Corações animados */
-    .hearts-container {
+    #popup {
       position: fixed;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 20, 0.95);
+      color: white;
+      padding: 30px 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      max-width: 90%;
+      width: 500px;
+      font-size: 1.2rem;
+      display: none;
+      z-index: 1000;
+      font-weight: 300;
+    }
+
+    #popup-texto {
+      display: inline;
+      white-space: pre-wrap;
+    }
+
+    #cursor {
+      display: inline;
+      animation: blink 1s infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    #fechar-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 10;
+    }
+
+    #fechar-btn:hover {
+      color: #e50914;
     }
 
     .heart {
-      position: absolute;
-      color: #e0b3ff;
-      font-size: 20px;
-      animation: fall 8s linear infinite;
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      animation: float 6s linear infinite;
+      opacity: 0.7;
+      z-index: 1;
     }
 
-    @keyframes fall {
-      0% { transform: translateY(-100px); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Estilo do botão do vídeo */
+    #btn-video {
+      margin-top: 40px;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      background: #e50914;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #btn-video:hover {
+      background: #b4060b;
+    }
+
+    /* Modo teatro: vídeo ocupa largura total */
+    #video-container {
+      margin-top: 20px;
+      width: 100vw;
+      background-color: black;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      display: none;
+    }
+
+    #video-container video {
+      width: 100%;
+      height: auto;
+      border-radius: 0;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="hearts-container"></div>
 
-  <h1 class="titulo">Clique nas cartas misteriosas...</h1>
+  <h1>Colecionando histórias há:</h1>
+  <div id="contador">...</div>
+  <br>
+  <p>desde 7 de dezembro de 2024 às 12:23 💖</p>
 
-  <div class="card-grid">
-    <div class="card" onclick="revelarCarta(this, 'foto1.jpg', 'texto1')">
-      <div class="front">❓</div>
-      <div class="back">
-        <img src="" alt="Foto 1" />
-        <p class="texto-revelado" id="texto1">Seu texto para a foto 1.</p>
-      </div>
+  <p>Clique nas fotos! 💖</p>
+
+  <div class="galeria">
+    <div class="foto" onclick="abrirPopup(this)" data-texto="O que dizer sobre esse dia? Éramos tão tímidos, o frio na barriga, nosso primeiro beijo. Mal sabíamos o que estava por vir!">
+      <img src="images/foto1.jpg" alt="foto1.jpg">
+      <div class="legenda">Nossa primeira foto</div>
     </div>
-    <div class="card" onclick="revelarCarta(this, 'foto2.jpg', 'texto2')">
-      <div class="front">❓</div>
-      <div class="back">
-        <img src="" alt="Foto 2" />
-        <p class="texto-revelado" id="texto2">Seu texto para a foto 2.</p>
-      </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Quando tomamos o vinho na praia e ficamos meio bêbados, lembra?">
+      <img src="images/primeira-foto-favorita.jpg" alt="">
+      <div class="legenda">Primeira foto favorita</div>
     </div>
-    <div class="card" onclick="revelarCarta(this, 'foto3.jpg', 'texto3')">
-      <div class="front">❓</div>
-      <div class="back">
-        <img src="" alt="Foto 3" />
-        <p class="texto-revelado" id="texto3">Seu texto para a foto 3.</p>
-      </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Nosso dia especial, onde tudo tornou-se oficial!">
+      <img src="images/pedido-namoro.jpg" alt="Foto 3" />
+      <div class="legenda">Nosso dia</div>
     </div>
-    <div class="card" onclick="revelarCarta(this, 'foto4.jpg', 'texto4')">
-      <div class="front">❓</div>
-      <div class="back">
-        <img src="" alt="Foto 4" />
-        <p class="texto-revelado" id="texto4">Seu texto para a foto 4.</p>
-      </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Dia das mulheres, eu com a MINHA mulher.">
+      <img src="images/data-especial.jpg" alt="">
+      <div class="legenda">Minha moreninha!!</div>
+    </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Um dos melhores dias, que eu me lembro.">
+      <img src="images/restaurante.jpg" alt="">
+      <div class="legenda"></div>
+    </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="O que dizer sobre esse sorrisinho lindo? Desde sempre com o sorriso mais lindo e cativante que eu já vi. Essa criancinha mal esperava que iria encontrar o seu príncipe encantado. Quem seria?">
+      <img src="images/luna-pequena.jpeg" alt="">
+      <div class="legenda">Luninha</div>
+    </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Eu menorzinho, poucazidéia, como você pode ver. Mal sabia que ia encontrar a Luninha uns 10 anos mais velha.">
+      <img src="images/joao-pequeno.jpeg" alt="Foto 3" />
+      <div class="legenda">Joãozinho</div>
+    </div>
+    <div class="foto" onclick="abrirPopup(this)" data-texto="Essa foto é a que eu mais gosto.">
+      <img src="images/melhor-foto-minha.jpg" alt="Foto 3" />
+      <div class="legenda"></div>
     </div>
   </div>
 
+  <div id="popup">
+    <button id="fechar-btn" onclick="fecharPopup()">×</button>
+    <span id="popup-texto"></span><span id="cursor">|</span>
+  </div>
+
+  <!-- Botão para mostrar o vídeo -->
+  <button id="btn-video">CLIQUE AQUI</button>
+
+  <!-- Container do vídeo em modo teatro -->
+  <div id="video-container">
+    <video controls>
+      <source src="videos/romantica.mp4" type="video/mp4" />
+      Seu navegador não suporta vídeo.
+    </video>
+  </div>
+
+  <audio id="type-sound" src="https://raw.githubusercontent.com/KevinLage/typing-sound/master/sound/type.mp3" preload="auto"></audio>
+
   <script>
-    function revelarCarta(cardElement, imagem, textoId) {
-      if (cardElement.classList.contains('revelada')) return;
+    function atualizarContador() {
+      const inicio = new Date("2024-12-07T12:23:00");
+      const agora = new Date();
 
-      cardElement.classList.add('revelada');
-      const imgTag = cardElement.querySelector('img');
-      imgTag.src = imagem;
+      let anos = agora.getFullYear() - inicio.getFullYear();
+      let meses = agora.getMonth() - inicio.getMonth();
+      let dias = agora.getDate() - inicio.getDate();
+      let horas = agora.getHours() - inicio.getHours();
+      let minutos = agora.getMinutes() - inicio.getMinutes();
+      let segundos = agora.getSeconds() - inicio.getSeconds();
 
-      setTimeout(() => {
-        document.getElementById(textoId).style.display = 'block';
-      }, 1000);
+      if (segundos < 0) { segundos += 60; minutos--; }
+      if (minutos < 0) { minutos += 60; horas--; }
+      if (horas < 0) { horas += 24; dias--; }
+      if (dias < 0) {
+        meses--;
+        const mesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0);
+        dias += mesAnterior.getDate();
+      }
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+
+      const texto = 
+        `${anos} ano${anos !== 1 ? 's' : ''}, ` +
+        `${meses} mes${meses !== 1 ? 'es' : ''}, ` +
+        `${dias} dia${dias !== 1 ? 's' : ''}, ` +
+        `${horas} hora${horas !== 1 ? 's' : ''}, ` +
+        `${minutos} minuto${minutos !== 1 ? 's' : ''}, ` +
+        `${segundos} segundo${segundos !== 1 ? 's' : ''}`;
+
+      document.getElementById("contador").textContent = texto;
     }
 
-    const container = document.querySelector('.hearts-container');
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // Efeito datilografia com som
+    let escreverInterval;
+
+    function abrirPopup(el) {
+      const texto = el.getAttribute("data-texto");
+      const popup = document.getElementById("popup");
+      const popupTexto = document.getElementById("popup-texto");
+      const cursor = document.getElementById("cursor");
+      const som = document.getElementById("type-sound");
+
+      popup.style.display = "block";
+      popupTexto.textContent = "";
+      cursor.style.display = "inline";
+
+      let i = 0;
+      clearInterval(escreverInterval);
+      escreverInterval = setInterval(() => {
+        if (i < texto.length) {
+          popupTexto.textContent += texto.charAt(i);
+          som.currentTime = 0;
+          som.play();
+          i++;
+        } else {
+          clearInterval(escreverInterval);
+          cursor.style.display = "none";
+        }
+      }, 60);
+    }
+
+    function fecharPopup() {
+      const popup = document.getElementById("popup");
+      const popupTexto = document.getElementById("popup-texto");
+      popup.style.display = "none";
+      popupTexto.textContent = "";
+      clearInterval(escreverInterval);
+    }
+
+    document.addEventListener("click", function (e) {
+      const popup = document.getElementById("popup");
+      if (
+        popup.style.display === "block" &&
+        !popup.contains(e.target) &&
+        !e.target.closest(".foto")
+      ) {
+        fecharPopup();
+      }
+    });
+
     function criarCoracao() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
-      heart.textContent = '💜';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-      heart.style.animationDuration = Math.random() * 5 + 5 + 's';
-      container.appendChild(heart);
-      setTimeout(() => heart.remove(), 10000);
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
     }
-    setInterval(criarCoracao, 300);
+
+    setInterval(criarCoracao, 500);
+
+    const btnVideo = document.getElementById('btn-video');
+    const videoContainer = document.getElementById('video-container');
+    const video = videoContainer.querySelector('video');
+
+    // Cria elemento para mensagem final
+    const mensagemFinal = document.createElement('div');
+    mensagemFinal.style.maxWidth = '600px';
+    mensagemFinal.style.margin = '40px auto';
+    mensagemFinal.style.color = '#e50914';
+    mensagemFinal.style.fontWeight = '300';
+    mensagemFinal.style.fontSize = '1.3rem';
+    mensagemFinal.style.fontFamily = "'Roboto', sans-serif";
+    mensagemFinal.style.whiteSpace = 'pre-wrap';
+    document.body.appendChild(mensagemFinal);
+
+    btnVideo.addEventListener('click', () => {
+      videoContainer.style.display = 'block';
+      btnVideo.style.display = 'none'; // esconde o botão
+      videoContainer.scrollIntoView({ behavior: 'smooth' });
+      video.play(); // inicia o vídeo automaticamente
+    });
+
+    video.addEventListener('play', () => {
+      btnVideo.style.display = 'none'; // garante que o botão fique escondido ao tocar
+    });
+
+    video.addEventListener('ended', () => {
+      videoContainer.style.display = 'none'; // esconde o vídeo
+      
+      // Rola para o fim da página
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+      // Texto final com efeito datilografia
+      const textoFinal = "Olha eu mais uma vez escrevendo pra você -- só que dessa vez, sem ser no papel. (Mas não se engane: deu o triplo de trabalho... daqueles que a gente gosta.) Apesar da data, que acontece todo ano, neste dia em especial eu quis preparar esta lembrança pra você. Porque vamos celebrar a nossa união - que dia após dia, a gente constrói e fortalece cada vez mais. Quero que você saiba que pode contar comigo: nos momentos difíceis, nos tristes, mas também em todos os outros. Estarei sempre com você, e vamos nos esforçar por isso. Passei horas criando esse código pra não deixar passar em branco. Te amo, meu brotinho!"
+
+
+      let i = 0;
+      mensagemFinal.textContent = '';
+      const cursorFinal = document.createElement('span');
+      cursorFinal.textContent = '|';
+      cursorFinal.style.animation = 'blink 1s infinite';
+      cursorFinal.style.marginLeft = '4px';
+      mensagemFinal.appendChild(cursorFinal);
+
+      const som = document.getElementById("type-sound");
+
+      function escreverFinal() {
+        if (i < textoFinal.length) {
+          mensagemFinal.textContent = mensagemFinal.textContent.replace('|', '') + textoFinal.charAt(i);
+          mensagemFinal.appendChild(cursorFinal);
+          som.currentTime = 0;
+          som.play();
+          i++;
+          setTimeout(escreverFinal, 60);
+        } else {
+          cursorFinal.style.display = 'none';
+        }
+      }
+      escreverFinal();
+    });
   </script>
 </body>
 </html>
